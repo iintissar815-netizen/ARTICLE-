@@ -7,24 +7,23 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 21
+          java-version: 17
       - name: Build APK
         run: |
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npm install @capacitor/core@6.1.2 @capacitor/cli@6.1.2 @capacitor/android@6.1.2
           mkdir -p www
           if [ -f index.html ]; then cp index.html www/; fi
-          if [ ! -f www/index.html ]; then echo '<html><body style="background:#000;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh"><h1>RUPTURE INARA - Loading...</h1><script>setTimeout(()=>window.location="https://iintissar815-netizen.github.io/ARTICLE-INARA-Magazine-/",1000)</script></body></html>' > www/index.html; fi
-          echo '{"appId":"com.rupture.inara","appName":"RUPTURE","webDir":"www"}' > capacitor.config.json
+          if [ ! -f www/index.html ]; then echo '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="background:#000;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh"><h1>RUPTURE INARA</h1><script>setTimeout(()=>location.href="https://iintissar815-netizen.github.io/ARTICLE-INARA-Magazine-/",500)</script></body></html>' > www/index.html; fi
+          echo '{"appId":"com.rupture.inara","appName":"RUPTURE","webDir":"www","bundledWebRuntime":false}' > capacitor.config.json
           npx cap add android
-          npx cap copy android
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
           name: RUPTURE-APK
