@@ -11,14 +11,14 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
       - name: Build APK
         run: |
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
           mkdir -p www
-          cp index.html www/ || echo "no index in root"
-          cp -r *.html *.css *.js www/ 2>/dev/null || true
+          if [ -f index.html ]; then cp index.html www/; fi
+          if [ ! -f www/index.html ]; then echo '<html><body style="background:#000;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh"><h1>RUPTURE INARA - Loading...</h1><script>setTimeout(()=>window.location="https://iintissar815-netizen.github.io/ARTICLE-INARA-Magazine-/",1000)</script></body></html>' > www/index.html; fi
           echo '{"appId":"com.rupture.inara","appName":"RUPTURE","webDir":"www"}' > capacitor.config.json
           npx cap add android
           npx cap copy android
