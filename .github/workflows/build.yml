@@ -16,7 +16,10 @@ jobs:
         run: |
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
-          echo '{"appId":"com.rupture.inara","appName":"RUPTURE","webDir":"."}' > capacitor.config.json
+          mkdir -p www
+          cp index.html www/ || echo "no index in root"
+          cp -r *.html *.css *.js www/ 2>/dev/null || true
+          echo '{"appId":"com.rupture.inara","appName":"RUPTURE","webDir":"www"}' > capacitor.config.json
           npx cap add android
           npx cap copy android
           cd android
