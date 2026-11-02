@@ -12,12 +12,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - name: Build
+      - name: Build APK
         run: |
-          npm i -g @capacitor/cli
           npm init -y
-          npm i @capacitor/core @capacitor/android
-          npx cap init RUPTURE com.rupture.inara --web-dir=.
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+          echo '{"appId":"com.rupture.inara","appName":"RUPTURE","webDir":"."}' > capacitor.config.json
           npx cap add android
           npx cap copy android
           cd android
